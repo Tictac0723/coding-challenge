@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './MovieInfo.css';
-import axios from 'axios';
+import Characters from '../Characters/Characters';
 
 class MovieInfo extends Component {
     constructor(props) {
@@ -8,7 +8,8 @@ class MovieInfo extends Component {
 
         this.state = {
             show: false,
-            characters: [],
+            characters: this.props.movieInfo.characters
+
         }
 
         this.open = this.open.bind(this);
@@ -16,42 +17,36 @@ class MovieInfo extends Component {
     }
 
     open() {
-        this.setState({show: !this.state.show})
+        this.setState({ show: !this.state.show })
     }
 
     close() {
-        this.setState({show: !this.state.show})
+        this.setState({ show: !this.state.show })
     }
 
 
     render() {
 
         const info = this.props.movieInfo;
-        if(!this.state.show){
-            return <p className='btn btn-info' onClick={this.open}>Show Details</p>
+        if (!this.state.show) {
+            return (
+                <div className='movieInfo'>
+                    <p className='btn btn-danger btn-info' onClick={this.open}>Show Details</p>
+                </div>
+            )
         } else {
-            return(
-                <div>
-                    <p className='btn btn-info' onClick={this.close}>No Details</p>
-                    <ul>
-                        <li>
-                            Release Year: {info.release_date}
-                        </li>
-                        <li>
-                            Characters:
-                            <ul>
-                                <li>
-                                {info.characters}
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
+            return (
+                <div className='movieInfo'>
+                    <hr />
+                    <p className='btn btn-danger btn-info btn-close' onClick={this.close}>No Details</p>
+                    <br />
+                    Release Year: {info.release_date}
+                    <br />
+                    <Characters characterURLs= {info.characters} />
+
                 </div>
             )
         }
-        return(
-            <div></div>
-        )
     }
 }
 

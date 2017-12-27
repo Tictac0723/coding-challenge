@@ -7,8 +7,7 @@ class Film extends Component {
     constructor(props){
         super(props);
         this.state = {
-            films: [],
-            characters: []
+            films: []
         }
 
         this.getFilms = this.getFilms.bind(this);
