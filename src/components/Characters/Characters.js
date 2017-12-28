@@ -5,7 +5,8 @@ class Characters extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            characters: []
+            characters: [],
+            loading: false
         }
 
         this.getCharacters = this.getCharacterURLs.bind(this);
@@ -13,13 +14,14 @@ class Characters extends Component {
 
     getCharacterURLs() {
         const charRequests = [];
+        this.setState({loading: true});
 
         for (var i = 0; i < this.props.characterURLs.length; i++) {
             charRequests.push(axios.get(this.props.characterURLs[i]))
         }
 
         axios.all(charRequests).then(axios.spread((...res) => {
-                this.setState({ characters: res });
+                this.setState({ characters: res, loading: false });
         }))
 
     }
@@ -33,21 +35,29 @@ class Characters extends Component {
     render() {
         const characters = this.state.characters;
         console.log(characters.length);
-        return (
-            <div className='Characters'>
-                <p>Characters:</p>
-                <ul>
-                    {
-                        characters.map((c) => {
-                            console.log(c);
-                            return (
-                                <div key={c.data.name}><a href={c.data.url}>{c.data.name}</a></div>
-                            )
-                        })
-                    }
-                </ul>
-            </div>
-        )
+        if (this.state.loading) {
+            return (
+                <div className='Characters'>
+                     <p>Characters:</p>
+                <img src='loader.gif' alt='loading'/>
+                </div>
+            )
+        } else {
+            return (
+                <div className='Characters'>
+                    <p>Characters:</p>
+                        {
+                            characters.map((c) => {
+                                console.log(c);
+                                return (
+                                    <div key={c.data.name}><a href={c.data.url}>{c.data.name}</a></div>
+                                )
+                            })
+                        }
+                        
+                </div>
+            )
+        }
     }
 }
 
